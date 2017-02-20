@@ -125,6 +125,20 @@
     var strChildehoodM = acM+'+'+bcM+'*x+'+ ccM +'*x^2'
     //var strPubertyM = apM+'/(1+exp(-'+bpM+'*(x-('+cpRangeM+'+2))))'
 
+    function calcEnd(sdp,sd20,x) {
+      //var x= cpRangeF;
+      blue = sdp
+      hieghtAtAgeP = acF+bcF*x+ ccF*x^2;
+      green =  hieghtAtAgeP + blue;
+      yellow = 117.68 + (2.016 * cpRangeF )
+      pink =(yellow-green)/blue
+      finalH = 166.1 + (pink* sd20);
+      return finalH;
+    }
+
+    //calcEnd(-2,,10)
+
+
     function renderGraph() {
       functionPlot({
         title:"Female Graph",
