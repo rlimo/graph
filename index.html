@@ -18,6 +18,9 @@
       <label>End of childehood</label>
       <input id="cpRangeF" type="number" />
       <br/>
+      <label>Standard deviation</label>
+      <input id="sdF" type="number" />
+      <br/>
       <button class="btn btn-primary" onclick="updateVal('female')">Change The values</button>
       <button class="btn btn-secondary" onclick="reset('female')">Reset</button>
       <div id="femaleGraph"></div>
@@ -51,11 +54,17 @@
     // This file is required by the index.html file and will
     // be executed in the renderer process for that window.
     // All of the Node.js APIs are available in this process.
+    
+    function calcHightFromSd(sd,gender) {
+
+    }
+    
     function updateValFeamle() {
 
        icRangeF=    document.getElementById("icRangeF").value == 0 ?  icRangeF : document.getElementById("icRangeF").value
        icNewRangeF=  document.getElementById("icNewRangeF").value == 0 ?  icNewRangeF : document.getElementById("icNewRangeF").value
        cpRangeF=   document.getElementById("cpRangeF").value == 0 ?  cpRangeF : document.getElementById("cpRangeF").value
+       sdF=   parseFloat(document.getElementById("sdF").value == 0 ?  sdF : document.getElementById("sdF").value)
       renderGraph();
 
     }
@@ -81,6 +90,7 @@
        icRangeF=    2
        icNewRangeF=  0.75
        cpRangeF=   10.2
+       sdF = 0
       document.getElementById("icRangeF").value=""
       document.getElementById("icNewRangeF").value=""
       document.getElementById("cpRangeF").value=""
@@ -118,12 +128,15 @@
     var aiM = 50.93 ,biM = 29.18,ciM = 1.73
     var acM = 71.89 ,bcM = 8.53,ccM = -0.18
     var apM = 15.82,bpM = 1.62
+    var sdF = 0,sdM = 0
     var strInfancyF = aiF+'+'+biF+'*(1-exp(-'+ ciF +'*x))'
     var strChildehoodF = acF+'+'+bcF+'*x+'+ ccF +'*x^2'
     //var strPubertyF = apF+'/(1+exp(-'+bpF+'*(x-('+cpRangeF+'+2))))'
     var strInfancyM = aiM+'+'+biM+'*(1-exp(-'+ ciM +'*x))'
     var strChildehoodM = acM+'+'+bcM+'*x+'+ ccM +'*x^2'
     //var strPubertyM = apM+'/(1+exp(-'+bpM+'*(x-('+cpRangeM+'+2))))'
+    var hF  = '+(1.820381 + (0.532667*x)-(0.016139*x*x))*';
+    var hM  = '+(1.814919 + (0.514192*x)-(0.014683*x*x))*';//+sdM;
 
     function calcEnd(sdp,sd20,x) {
       //var x= cpRangeF;
@@ -140,6 +153,7 @@
 
 
     function renderGraph() {
+      console.log("render the graph");
       functionPlot({
         title:"Female Graph",
         target: '#femaleGraph',
@@ -154,22 +168,22 @@
         data: [
           //Feamle Graph
           {
-            fn: strInfancyF//Infancy: Y=a+b(1-exp(-c*x))
+            fn: strInfancyF + '+'+hF + '+' + sdF//Infancy: Y=a+b(1-exp(-c*x))
             , color: 'green',
             range: [0, icNewRangeF]
           },
           {
             //fn: strInfancyF + '+7.697*('+icNewRangeF+'-0.75)'//Infancy: Y=a+b(1-exp(-c*x))
-            fn: strInfancyF + '+7.697*(x-'+icNewRangeF+')'//Infancy: Y=a+b(1-exp(-c*x))
+            fn: strInfancyF + '+7.697*(x-'+icNewRangeF+')' + '+'+hF + '+' + sdF//Infancy: Y=a+b(1-exp(-c*x))
             , color: '#ff4dff',
             range: [icNewRangeF, icRangeF]
           },
           {
-            fn: strChildehoodF //Childehood: Y=a+b(1-exp(-c*x))
+            fn: strChildehoodF + '+'+hF + '+' + sdF//Childehood: Y=a+b(1-exp(-c*x))
             , color: 'blue'
             , range: [icRangeF, cpRangeF]
           }, {
-            fn: strChildehoodF + '+' + apF+'/(1+exp(-'+bpF+'*(x-('+cpRangeF+'+2))))'//Puberty: y=apF/(1+exp(-bpF(t-tv)))
+            fn: strChildehoodF + '+' + apF+'/(1+exp(-'+bpF+'*(x-('+cpRangeF+'+2))))' + '+'+hF + '+' + sdF//Puberty: y=apF/(1+exp(-bpF(t-tv)))
             , range: [cpRangeF, xLimitF]
             , color: 'red'
           }
