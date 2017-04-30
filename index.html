@@ -120,6 +120,7 @@
     var icRangeF= icRangeM= 2
     var icNewRangeF= icNewRangeM= 0.75
     var cpRangeF= cpRangeM=  10.2
+	var cpRangeEndF = cpRangeF +5.34
     var xLimitF= xLimitM = 20
     var aiF = 50.20 ,biF = 27.67,ciF = 1.74
     var acF = 69.86 ,bcF = 8.93,ccF = -0.22
@@ -138,8 +139,9 @@
     var hF  = '+(1.820381 + (0.532667*x)-(0.016139*x*x))*';
     var hM  = '+(1.814919 + (0.514192*x)-(0.014683*x*x))*';//+sdM;
 
-    function calcEnd(sdp,sd20,x) {
+    function calcEnd(sdp,x) {
       //var x= cpRangeF;
+	  var sd20= 1.814919 + 0.514192*20 - 0.014683*400;
       blue = sdp
       hieghtAtAgeP = acF+bcF*x+ ccF*x^2;
       green =  hieghtAtAgeP + blue;
@@ -149,7 +151,7 @@
       return finalH;
     }
 
-    //calcEnd(-2,,10)
+    //calcEnd(-2,10)
 
 
     function renderGraph() {
@@ -184,8 +186,13 @@
             , range: [icRangeF, cpRangeF]
           }, {
             fn: strChildehoodF + '+' + apF+'/(1+exp(-'+bpF+'*(x-('+cpRangeF+'+2))))' + '+'+hF + '+' + sdF//Puberty: y=apF/(1+exp(-bpF(t-tv)))
-            , range: [cpRangeF, xLimitF]
+            , range: [cpRangeF, cpRangeEndF]
             , color: 'red'
+          },
+		   {
+            fn: strChildehoodF + '+' + apF+'/(1+exp(-'+bpF+'*(x-('+cpRangeF+'+2))))' + '+'+hF + '+' + sdF//Puberty: y=apF/(1+exp(-bpF(t-tv)))
+            , range: [cpRangeEndF, xLimitF]
+            , color: 'black'
           }
 
 
