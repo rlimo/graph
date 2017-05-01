@@ -61,18 +61,20 @@
     
     function updateValFeamle() {
 
-       icRangeF=    document.getElementById("icRangeF").value == 0 ?  icRangeF : document.getElementById("icRangeF").value
-       icNewRangeF=  document.getElementById("icNewRangeF").value == 0 ?  icNewRangeF : document.getElementById("icNewRangeF").value
-       cpRangeF=   document.getElementById("cpRangeF").value == 0 ?  cpRangeF : document.getElementById("cpRangeF").value
+       icRangeF=    Number(document.getElementById("icRangeF").value == 0 ?  icRangeF : document.getElementById("icRangeF").value)
+       icNewRangeF=  Number(document.getElementById("icNewRangeF").value == 0 ?  icNewRangeF : document.getElementById("icNewRangeF").value)
+       cpRangeF=   Number(document.getElementById("cpRangeF").value == 0 ?  cpRangeF : document.getElementById("cpRangeF").value)
+	   cpRangeEndF = cpRangeF +5.34;
        sdF=   parseFloat(document.getElementById("sdF").value == 0 ?  sdF : document.getElementById("sdF").value)
       renderGraph();
 
     }
     function updateValMale() {
 
-       icRangeM=    document.getElementById("icRangeM").value == 0 ?  icRangeM : document.getElementById("icRangeM").value
-       icNewRangeM=  document.getElementById("icNewRangeM").value == 0 ?  icNewRangeM : document.getElementById("icNewRangeM").value
-       cpRangeM=   document.getElementById("cpRangeM").value == 0 ?  cpRangeM : document.getElementById("cpRangeM").value
+       icRangeM=    Number(document.getElementById("icRangeM").value == 0 ?  icRangeM : document.getElementById("icRangeM").value)
+       icNewRangeM=  Number(document.getElementById("icNewRangeM").value == 0 ?  icNewRangeM : document.getElementById("icNewRangeM").value)
+       cpRangeM=   Number(document.getElementById("cpRangeM").value == 0 ?  cpRangeM : document.getElementById("cpRangeM").value)
+	   cpRangeEndM = cpRangeM +5.34;
       renderGraph();
     }
     function updateVal(gender) {
@@ -119,7 +121,7 @@
     var functionPlot = require('function-plot');
     var icRangeF= icRangeM= 2
     var icNewRangeF= icNewRangeM= 0.75
-    var cpRangeF= cpRangeM=  10//10.2
+    var cpRangeF= cpRangeM=  10.2
 	var cpRangeEndF = cpRangeF +5.34
     var xLimitF= xLimitM = 20
     var aiF = 50.20 ,biF = 27.67,ciF = 1.74
@@ -129,7 +131,7 @@
     var aiM = 50.93 ,biM = 29.18,ciM = 1.73
     var acM = 71.89 ,bcM = 8.53,ccM = -0.18
     var apM = 15.82,bpM = 1.62
-    var sdF = -2,sdM = 0
+    var sdF = 1,sdM = 1
     var strInfancyF = aiF+'+'+biF+'*(1-exp(-'+ ciF +'*x))'
     var strChildehoodF = acF+'+'+bcF+'*x+'+ ccF +'*x^2'
     //var strPubertyF = apF+'/(1+exp(-'+bpF+'*(x-('+cpRangeF+'+2))))'
@@ -144,8 +146,8 @@
 	  var sd20= (1.814919 + 0.514192*20 - 0.014683*400)*sdF;
 	  var sdp = (1.814919 + 0.514192*x - 0.014683*x*x)*sdF;
       blue = sdp
-      hieghtAtAgeP = acF+bcF*x+ ccF*x^2;
-      green =  hieghtAtAgeP + blue;
+      heightAtAgeP = acF+bcF*x+ ccF*x*x;
+      green =  heightAtAgeP + blue;
       yellow = 117.68 + (2.016 * cpRangeF )
       pink =(yellow-green)/blue
       finalH = 166.1 + (Math.abs(pink)* sd20);
@@ -158,6 +160,10 @@
 	  var yy = (1.820381 + (0.532667*cpRangeEndF)-(0.016139*cpRangeEndF*cpRangeEndF))*sdF;
 	  var childehoodF = acF+bcF*cpRangeEndF+ccF*Math.pow(cpRangeEndF,2);
 	  return (calcEnd()- (childehoodF + apF/(1+exp)+yy))/( xLimitF - cpRangeEndF);
+	  
+//	  var heightAtAgeP = acF+bcF*cpRangeF+ ccF*cpRangeF*cpRangeF;
+	//   var sdp = (1.814919 + 0.514192*cpRangeF - 0.014683*cpRangeF*cpRangeF)*sdF;
+	  // return (calcEnd()- (heightAtAgeP+sdp))/( xLimitF - cpRangeEndF);
 	  
 	  //Puberty: y=apF/(1+exp(-bpF(t-tv)))
 	 }
