@@ -119,7 +119,7 @@
     var functionPlot = require('function-plot');
     var icRangeF= icRangeM= 2
     var icNewRangeF= icNewRangeM= 0.75
-    var cpRangeF= cpRangeM=  10.2
+    var cpRangeF= cpRangeM=  10//10.2
 	var cpRangeEndF = cpRangeF +5.34
     var xLimitF= xLimitM = 20
     var aiF = 50.20 ,biF = 27.67,ciF = 1.74
@@ -129,7 +129,7 @@
     var aiM = 50.93 ,biM = 29.18,ciM = 1.73
     var acM = 71.89 ,bcM = 8.53,ccM = -0.18
     var apM = 15.82,bpM = 1.62
-    var sdF = 0,sdM = 0
+    var sdF = -2,sdM = 0
     var strInfancyF = aiF+'+'+biF+'*(1-exp(-'+ ciF +'*x))'
     var strChildehoodF = acF+'+'+bcF+'*x+'+ ccF +'*x^2'
     //var strPubertyF = apF+'/(1+exp(-'+bpF+'*(x-('+cpRangeF+'+2))))'
@@ -139,17 +139,32 @@
     var hF  = '+(1.820381 + (0.532667*x)-(0.016139*x*x))*';
     var hM  = '+(1.814919 + (0.514192*x)-(0.014683*x*x))*';//+sdM;
 
-    function calcEnd(sdp,x) {
-      //var x= cpRangeF;
-	  var sd20= 1.814919 + 0.514192*20 - 0.014683*400;
+    function calcEnd() {
+      var x= cpRangeF;
+	  var sd20= (1.814919 + 0.514192*20 - 0.014683*400)*sdF;
+	  var sdp = (1.814919 + 0.514192*x - 0.014683*x*x)*sdF;
       blue = sdp
       hieghtAtAgeP = acF+bcF*x+ ccF*x^2;
       green =  hieghtAtAgeP + blue;
       yellow = 117.68 + (2.016 * cpRangeF )
       pink =(yellow-green)/blue
-      finalH = 166.1 + (pink* sd20);
+      finalH = 166.1 + (Math.abs(pink)* sd20);
       return finalH;
     }
+	
+	 function calcA() {
+	  var inner = -bpF*(cpRangeEndF-(cpRangeF+2));
+	  var exp = Math.exp(inner);
+	  var yy = (1.820381 + (0.532667*cpRangeEndF)-(0.016139*cpRangeEndF*cpRangeEndF))*sdF;
+	  var childehoodF = acF+bcF*cpRangeEndF+ccF*Math.pow(cpRangeEndF,2);
+	  return (calcEnd()- (childehoodF + apF/(1+exp)+yy))/( xLimitF - cpRangeEndF);
+	  
+	  //Puberty: y=apF/(1+exp(-bpF(t-tv)))
+	 }
+	 
+	 function calcB() {
+	   return calcEnd()-calcA()*xLimitF;
+	 }
 
     //calcEnd(-2,10)
 
@@ -190,7 +205,7 @@
             , color: 'red'
           },
 		   {
-            fn: strChildehoodF + '+' + apF+'/(1+exp(-'+bpF+'*(x-('+cpRangeF+'+2))))' + '+'+hF + '+' + sdF//Puberty: y=apF/(1+exp(-bpF(t-tv)))
+            fn: calcA() + '*x +'+ calcB()//Puberty: y=apF/(1+exp(-bpF(t-tv)))
             , range: [cpRangeEndF, xLimitF]
             , color: 'black'
           }
