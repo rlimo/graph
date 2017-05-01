@@ -1,6 +1,7 @@
 {
   "name": "electron-quick-start",
   "version": "1.0.0",
+  "productName": "GrowthGraph",
   "description": "A minimal Electron application",
   "main": "main.js",
   "scripts": {
