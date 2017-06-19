@@ -54,11 +54,11 @@
     // This file is required by the index.html file and will
     // be executed in the renderer process for that window.
     // All of the Node.js APIs are available in this process.
-    
+
     function calcHightFromSd(sd,gender) {
 
     }
-    
+
     function updateValFeamle() {
 
        icRangeF=    Number(document.getElementById("icRangeF").value == 0 ?  icRangeF : document.getElementById("icRangeF").value)
@@ -107,7 +107,7 @@
       document.getElementById("icNewRangeM").value=""
       document.getElementById("cpRangeM").value=""
       renderGraph();
-    } 
+    }
     function reset(gender) {
       if (gender=='male'){
         resetMale();
@@ -143,8 +143,8 @@
 
     function calcEnd() {
       var x= cpRangeF;
-	  var sd20= (1.814919 + 0.514192*20 - 0.014683*400)*sdF;
-	  var sdp = (1.814919 + 0.514192*x - 0.014683*x*x)*sdF;
+	  var sd20= (1.820381 + 0.532667*20 - 0.016139*400);
+	  var sdp = (1.820381 + 0.532667*x - 0.016139*x*x);
       blue = sdp
       heightAtAgeP = acF+bcF*x+ ccF*x*x;
       green =  heightAtAgeP + blue;
@@ -153,21 +153,21 @@
       finalH = 166.1 + (Math.abs(pink)* sd20);
       return finalH;
     }
-	
+
 	 function calcA() {
 	  var inner = -bpF*(cpRangeEndF-(cpRangeF+2));
 	  var exp = Math.exp(inner);
 	  var yy = (1.820381 + (0.532667*cpRangeEndF)-(0.016139*cpRangeEndF*cpRangeEndF))*sdF;
 	  var childehoodF = acF+bcF*cpRangeEndF+ccF*Math.pow(cpRangeEndF,2);
 	  return (calcEnd()- (childehoodF + apF/(1+exp)+yy))/( xLimitF - cpRangeEndF);
-	  
+
 //	  var heightAtAgeP = acF+bcF*cpRangeF+ ccF*cpRangeF*cpRangeF;
 	//   var sdp = (1.814919 + 0.514192*cpRangeF - 0.014683*cpRangeF*cpRangeF)*sdF;
 	  // return (calcEnd()- (heightAtAgeP+sdp))/( xLimitF - cpRangeEndF);
-	  
+
 	  //Puberty: y=apF/(1+exp(-bpF(t-tv)))
 	 }
-	 
+
 	 function calcB() {
 	   return calcEnd()-calcA()*xLimitF;
 	 }
