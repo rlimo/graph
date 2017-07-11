@@ -1,5 +1,6 @@
 # Growth Graph
-To pack
+**To pack
+
 electron-packager . GrowthGraph --platform=win32 --arch=x64 --overwrite
 
 **Clone and run for a quick way to see Electron in action.**
